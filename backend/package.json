@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "db:migrate": "node src/scripts/run_migrations.ts",
+    "docker:dev": "docker compose up -d"
+  },
   "type": "module",
   "dependencies": {
     "kysely": "^0.27.5",
