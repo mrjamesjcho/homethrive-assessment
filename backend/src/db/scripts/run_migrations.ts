@@ -1,32 +1,14 @@
-import * as path from "path";
-import pg from "pg";
-const { Pool } = pg;
 import { promises as fs } from "fs";
-import {
-  Kysely,
-  Migrator,
-  PostgresDialect,
-  FileMigrationProvider,
-} from "kysely";
-import { fileURLToPath } from "url";
+import { FileMigrationProvider, Migrator } from "kysely";
+import * as path from "path";
 import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { db } from "../database.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 async function migrateToLatest() {
-  const db = new Kysely({
-    dialect: new PostgresDialect({
-      pool: new Pool({
-        host: "localhost",
-        database: "homethrive",
-        user: "postgres",
-        password: "password",
-        port: 5432,
-      }),
-    }),
-  });
-
   const migrator = new Migrator({
     db,
     provider: new FileMigrationProvider({

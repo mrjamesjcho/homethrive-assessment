@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "db:migrate": "node src/scripts/run_migrations.ts",
+    "db:migrate": "node src/db/scripts/run_migrations.ts",
     "docker:dev": "docker compose up -d"
   },
   "type": "module",
