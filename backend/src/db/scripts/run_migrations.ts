@@ -1,12 +1,7 @@
 import { promises as fs } from "fs";
 import { FileMigrationProvider, Migrator } from "kysely";
 import * as path from "path";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { db } from "../database.ts";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { db } from "../database";
 
 async function migrateToLatest() {
   const migrator = new Migrator({
@@ -14,8 +9,7 @@ async function migrateToLatest() {
     provider: new FileMigrationProvider({
       fs,
       path,
-      // This needs to be an absolute path.
-      migrationFolder: path.join(__dirname, "../db/migrations"),
+      migrationFolder: path.join(__dirname, "../migrations"),
     }),
   });
 

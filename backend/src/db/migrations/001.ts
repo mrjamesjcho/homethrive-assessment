@@ -2,7 +2,7 @@ import { Kysely, sql } from "kysely";
 
 export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
-    .createTable("recipient")
+    .createTable("recipients")
     .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("first_name", "text", (col) => col.notNull())
     .addColumn("last_name", "text", (col) => col.notNull())
@@ -15,7 +15,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 
   await db.schema
-    .createTable("medication")
+    .createTable("medications")
     .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("name", "text", (col) => col.notNull())
     .addColumn("active", "boolean", (col) => col.notNull().defaultTo(true))
@@ -28,10 +28,13 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 
   await db.schema
-    .createTable("perscription")
+    .createTable("prescriptions")
     .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("medication_id", "integer", (col) =>
-      col.references("medication.id").notNull()
+      col.references("medications.id").notNull()
+    )
+    .addColumn("recipient_id", "integer", (col) =>
+      col.references("recipients.id").notNull()
     )
     .addColumn("dosage", "integer", (col) => col.notNull())
     .addColumn("dosage_unit", "text", (col) => col.notNull())
@@ -49,27 +52,13 @@ export async function up(db: Kysely<any>): Promise<void> {
     .execute();
 
   await db.schema
-    .createTable("recipient_perscription")
+    .createTable("dose_schedules")
     .addColumn("id", "serial", (col) => col.primaryKey())
+    .addColumn("prescription_id", "integer", (col) =>
+      col.references("prescriptions.id").notNull()
+    )
     .addColumn("recipient_id", "integer", (col) =>
-      col.references("recipient.id").notNull()
-    )
-    .addColumn("perscription_id", "integer", (col) =>
-      col.references("perscription.id").notNull()
-    )
-    .addColumn("created_at", "timestamp", (col) =>
-      col.notNull().defaultTo(sql`now()`)
-    )
-    .addColumn("updated_at", "timestamp", (col) =>
-      col.notNull().defaultTo(sql`now()`)
-    )
-    .execute();
-
-  await db.schema
-    .createTable("dose")
-    .addColumn("id", "serial", (col) => col.primaryKey())
-    .addColumn("perscription_id", "integer", (col) =>
-      col.references("perscription.id").notNull()
+      col.references("recipients.id").notNull()
     )
     .addColumn("scheduled_at", "timestamp", (col) => col.notNull())
     .addColumn("taken", "boolean", (col) => col.notNull().defaultTo(false))
@@ -79,6 +68,5 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("updated_at", "timestamp", (col) =>
       col.notNull().defaultTo(sql`now()`)
     )
-    .addColumn("deleted_at", "timestamp")
     .execute();
 }
