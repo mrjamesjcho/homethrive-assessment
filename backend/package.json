@@ -1,16 +1,25 @@
 {
   "scripts": {
-    "db:migrate": "node src/db/scripts/run_migrations.ts",
-    "docker:dev": "docker compose up -d"
+    "build": "tsc",
+    "start": "ts-node src/app.ts",
+    "deploy": "sls deploy",
+    "offline": "sls offline start",
+    "db:migrate": "ts-node ./src/db/scripts/run_migrations.ts",
+    "db:seed": "ts-node ./src/db/scripts/run_seeds.ts"
   },
-  "type": "module",
   "dependencies": {
+    "@fastify/aws-lambda": "^5.1.4",
+    "fastify": "^5.2.1",
+    "json-schema-to-ts": "^3.1.1",
     "kysely": "^0.27.5",
-    "pg": "^8.13.3"
+    "pg": "^8.13.3",
+    "serverless-offline": "^14.4.0"
   },
   "devDependencies": {
+    "@types/aws-lambda": "^8.10.147",
     "@types/node": "^22.13.4",
     "@types/pg": "^8.11.11",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
 }

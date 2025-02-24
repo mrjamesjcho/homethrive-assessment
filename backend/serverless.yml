@@ -1,0 +1,34 @@
+service: homethrive-assessment-lambda
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_USER: ${env:DB_USER}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_NAME: ${env:DB_NAME}
+    NODE_OPTIONS: "--loader ts-node/esm"
+
+functions:
+  app:
+    handler: dist/lambda.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: '*'
+
+custom:
+  esbuild:
+    format: esm
+    sourcemap: true
+    target: node18
+
+plugins:
+  - serverless-offline
+
+package:
+  patterns:
+    - '!**/*'
+    - 'dist/**'
