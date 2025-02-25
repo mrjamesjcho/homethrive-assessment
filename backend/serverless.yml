@@ -9,6 +9,8 @@ provider:
     DB_USER: ${env:DB_USER}
     DB_PASSWORD: ${env:DB_PASSWORD}
     DB_NAME: ${env:DB_NAME}
+    BASIC_AUTH_USERNAME: ${env:BASIC_AUTH_USERNAME}
+    BASIC_AUTH_PASSWORD: ${env:BASIC_AUTH_PASSWORD}
     NODE_OPTIONS: "--loader ts-node/esm"
 
 functions:

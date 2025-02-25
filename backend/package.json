@@ -8,7 +8,9 @@
     "db:seed": "ts-node ./src/db/scripts/run_seeds.ts"
   },
   "dependencies": {
+    "@fastify/auth": "^5.0.2",
     "@fastify/aws-lambda": "^5.1.4",
+    "@fastify/basic-auth": "^6.0.3",
     "fastify": "^5.2.1",
     "json-schema-to-ts": "^3.1.1",
     "kysely": "^0.27.5",
