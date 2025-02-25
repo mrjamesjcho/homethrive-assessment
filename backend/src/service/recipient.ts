@@ -1,7 +1,5 @@
-import { db } from "../db/database";
-import { RecipientInsert } from "../db/types";
-import { Recipient } from "../schemas/recipient";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
+import { db } from "../db/database";
 
 class RecipientService {
   public findAll = async () => {
@@ -41,18 +39,7 @@ class RecipientService {
       ])
       .where("id", "=", id)
       .executeTakeFirst();
-
-    console.log("recipient", recipient);
     return recipient;
-  };
-
-  public insertOne = async (recipient: RecipientInsert) => {
-    const result = await db
-      .insertInto("recipients")
-      .values(recipient)
-      .returning("id")
-      .execute();
-    return { id: result[0].id };
   };
 }
 

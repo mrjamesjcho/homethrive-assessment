@@ -4,7 +4,11 @@ import {
   Prescription as PrescriptionDB,
 } from "../db/types";
 import { DoseScheduleInsertBody } from "../schemas/dosage_schedule";
-import { Prescription, PrescriptionInsertBody } from "../schemas/prescription";
+import {
+  Prescription,
+  PrescriptionInsertBody,
+  PrescriptionUpdateBody,
+} from "../schemas/prescription";
 import DoseScheduleService from "./dose_schedule";
 
 class PrescriptionService {
@@ -17,7 +21,6 @@ class PrescriptionService {
   };
 
   public insertOne = async (body: PrescriptionInsertBody) => {
-    console.log("-----body", body);
     // insert prescription and dose schedules in a transaction
     let prescriptionInsertResult: PrescriptionDB | undefined;
     let doseScheduleInsertResult: DoseScheduleDB[] = [];
@@ -82,8 +85,27 @@ class PrescriptionService {
       DoseScheduleService.toApi(ds)
     );
 
-    console.log("newPrescription", newPrescription);
     return newPrescription;
+  };
+
+  public updateOne = async (id: number, body: PrescriptionUpdateBody) => {
+    const result = await db
+      .updateTable("prescriptions")
+      .set(body)
+      .where("id", "=", id)
+      .returning([
+        "id",
+        "medication_id",
+        "recipient_id",
+        "dosage",
+        "dosage_unit",
+        "frequency",
+        "start_date",
+        "end_date",
+        "active",
+      ])
+      .executeTakeFirstOrThrow();
+    return this.toApi(result);
   };
 }
 

@@ -5,9 +5,7 @@ import RecipientService from "../service/recipient";
 
 export async function recipientRoutes(fastify: FastifyInstance) {
   fastify.get("/", { schema: findAll }, async (_request, _reply) => {
-    console.log("GET /recipients");
     const recipients = await RecipientService.findAll();
-    console.log("recipients", recipients);
     return { data: recipients };
   });
 

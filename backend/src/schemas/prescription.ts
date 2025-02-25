@@ -75,3 +75,4 @@ export const updateOne = {
 export type Prescription = FromSchema<typeof prescription>;
 export type PrescriptionInsertBody = FromSchema<typeof insertOne.body>;
 export type PrescriptionUpdateBody = FromSchema<typeof updateOne.body>;
+export type PrescriptionUpdateOneParams = FromSchema<typeof updateOne.params>;

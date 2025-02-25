@@ -8,15 +8,6 @@ class MedicationService {
       .execute();
     return medications;
   };
-
-  public findOne = async (id: number) => {
-    const medication = await db
-      .selectFrom("medications")
-      .select(["id", "name"])
-      .where("id", "=", id)
-      .executeTakeFirst();
-    return medication;
-  };
 }
 
 export default new MedicationService();

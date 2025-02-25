@@ -47,23 +47,5 @@ export const findOne = {
   },
 } as const;
 
-export const insertOne = {
-  body: {
-    type: "object",
-    properties: {
-      first_name: { type: "string" },
-      last_name: { type: "string" },
-    },
-  },
-  response: {
-    201: {
-      type: "object",
-      properties: {
-        id: { type: "number" },
-      },
-    },
-  },
-};
-
 export type Recipient = FromSchema<typeof recipient>;
 export type RecipientFindOneParams = FromSchema<typeof findOne.params>;

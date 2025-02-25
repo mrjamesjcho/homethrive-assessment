@@ -23,25 +23,4 @@ export const findAll = {
   },
 };
 
-export const findOne = {
-  response: {
-    200: medication,
-    404: {
-      type: "object",
-      properties: {
-        message: { type: "string" },
-      },
-    },
-  },
-  params: {
-    type: "object",
-    properties: {
-      id: { type: "string" },
-    },
-    required: ["id"],
-    additionalProperties: false,
-  },
-} as const;
-
 export type Medication = FromSchema<typeof medication>;
-export type MedicationFindOneParams = FromSchema<typeof findOne.params>;

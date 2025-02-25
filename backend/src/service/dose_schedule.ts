@@ -32,6 +32,7 @@ class DoseScheduleService {
         "medications.name",
       ])
       .where("dose_schedules.recipient_id", "=", recipientId)
+      .where("prescriptions.active", "=", true)
       .where(
         sql<string>`dose_schedules.scheduled_at::date`,
         ">=",
@@ -44,7 +45,6 @@ class DoseScheduleService {
   };
 
   public updateOne = async (id: number, body: DoseScheduleUpdateOneBody) => {
-    console.log("id", id);
     const result = await db
       .updateTable("dose_schedules")
       .set(body)
@@ -57,7 +57,6 @@ class DoseScheduleService {
         "taken",
       ])
       .executeTakeFirstOrThrow();
-    console.log("result", result);
     return this.toApi(result);
   };
 }
