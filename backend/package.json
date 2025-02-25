@@ -4,6 +4,8 @@
     "start": "ts-node src/app.ts",
     "deploy": "sls deploy",
     "offline": "sls offline start",
+    "db:start": "docker compose up -d",
+    "db:stop": "docker compose down",
     "db:migrate": "ts-node ./src/db/scripts/run_migrations.ts",
     "db:seed": "ts-node ./src/db/scripts/run_seeds.ts"
   },
