@@ -90,9 +90,11 @@ npm run dev
 ```
 
 ### Screenshot
+![homethrive](https://github.com/user-attachments/assets/00f9c5eb-7ad7-48ea-a414-c3ac416c7357)
 
 ### Reduced scope
 
 - no unit/integration tests
+- no robust frontend form validation
 - error handling can be improved since schema errors do not always return a useful message
-- unable to test deployment
+- unable to test deploying lambda
