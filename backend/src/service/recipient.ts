@@ -35,6 +35,7 @@ class RecipientService {
               "prescriptions.start_date",
               "prescriptions.end_date",
             ])
+            .orderBy("medications.name", "asc")
         ).as("prescriptions"),
       ])
       .where("id", "=", id)
