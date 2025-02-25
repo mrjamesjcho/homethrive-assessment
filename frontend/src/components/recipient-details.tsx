@@ -2,7 +2,7 @@
 
 import fetchWithBasicAuth from "@/api/auth_fetch";
 import { updateDoseSchedule } from "@/api/dose_schedules";
-import { createPrescription } from "@/api/prescriptions";
+import { createPrescription, updatePrescription } from "@/api/prescriptions";
 import { DoseSchedule, Medication, Recipient } from "@/types";
 import React, { useEffect, useState } from "react";
 
@@ -55,6 +55,24 @@ export default function RecipientDetails({ id }: RecipientDetailsProps) {
     fetchDoseScheduleData();
   }, [id]);
 
+  const fetchDoseScheduleData = async () => {
+    const dsResponse = await fetchWithBasicAuth(
+      "GET",
+      `${process.env.API_URL}/dose_schedules?recipient_id=${id}`
+    );
+    const data = await dsResponse.json();
+    setDosageSchedule(data.data);
+  };
+
+  const fetchRecipientData = async () => {
+    const recipientResponse = await fetchWithBasicAuth(
+      "GET",
+      `${process.env.API_URL}/recipients/${id}`
+    );
+    const data = await recipientResponse.json();
+    setRecipient(data);
+  };
+
   const formatDosage = (dosage: number, unit: string) => {
     if (unit !== "pill") {
       return `${dosage}${unit}`;
@@ -90,18 +108,8 @@ export default function RecipientDetails({ id }: RecipientDetailsProps) {
       start_date: "",
       end_date: "",
     });
-    const recipientRes = await fetchWithBasicAuth(
-      "GET",
-      `${process.env.API_URL}/recipients/${id}`
-    );
-    const recipientData = await recipientRes.json();
-    setRecipient(recipientData);
-    const response = await fetchWithBasicAuth(
-      "GET",
-      `${process.env.API_URL}/dose_schedules?recipient_id=${id}`
-    );
-    const data = await response.json();
-    setDosageSchedule(data.data);
+    await fetchRecipientData();
+    await fetchDoseScheduleData();
   };
 
   const handleTakenChange = async (
@@ -110,12 +118,7 @@ export default function RecipientDetails({ id }: RecipientDetailsProps) {
     const doseId = event.target.value;
     const taken = event.target.checked;
     await updateDoseSchedule(doseId, taken);
-    const response = await fetchWithBasicAuth(
-      "GET",
-      `${process.env.API_URL}/dose_schedules?recipient_id=${id}`
-    );
-    const data = await response.json();
-    setDosageSchedule(data.data);
+    await fetchDoseScheduleData();
   };
 
   const handleActiveChange = async (
@@ -123,13 +126,9 @@ export default function RecipientDetails({ id }: RecipientDetailsProps) {
   ) => {
     const id = event.target.value;
     const active = event.target.checked;
-    await fetchWithBasicAuth(
-      "PATCH",
-      `${process.env.API_URL}/prescriptions/${id}`,
-      {
-        active,
-      }
-    );
+    await updatePrescription(id, { active });
+    await fetchRecipientData();
+    await fetchDoseScheduleData();
   };
 
   const render = () => {
@@ -172,7 +171,7 @@ export default function RecipientDetails({ id }: RecipientDetailsProps) {
           >
             <option value="">Select Frequency</option>
             <option value="day">daily</option>
-            <option value="weekl">weekly</option>
+            <option value="week">weekly</option>
           </select>
           <input
             className="col-span-1 placeholder:text-gray-500 placeholder:italic text-gray-500"

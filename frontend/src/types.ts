@@ -24,6 +24,10 @@ export type PrescriptionCreatePayload = {
   end_date: string;
 };
 
+export type PrescriptionUpdatePayload = {
+  active: boolean;
+};
+
 export type Recipient = {
   id: number;
   first_name: string;
