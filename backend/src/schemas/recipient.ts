@@ -7,6 +7,9 @@ const recipient = {
     id: { type: "number" },
     first_name: { type: "string" },
     last_name: { type: "string" },
+    prescriptions: {
+      type: "array",
+    },
   },
 } as const;
 
@@ -63,4 +66,4 @@ export const insertOne = {
 };
 
 export type Recipient = FromSchema<typeof recipient>;
-export type RecipientParams = FromSchema<typeof findOne.params>;
+export type RecipientFindOneParams = FromSchema<typeof findOne.params>;

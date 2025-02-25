@@ -18,7 +18,6 @@ export async function up(db: Kysely<any>): Promise<void> {
     .createTable("medications")
     .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("name", "text", (col) => col.notNull())
-    .addColumn("active", "boolean", (col) => col.notNull().defaultTo(true))
     .addColumn("created_at", "timestamp", (col) =>
       col.notNull().defaultTo(sql`now()`)
     )
@@ -36,10 +35,10 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("recipient_id", "integer", (col) =>
       col.references("recipients.id").notNull()
     )
+    .addColumn("active", "boolean", (col) => col.notNull().defaultTo(true))
     .addColumn("dosage", "integer", (col) => col.notNull())
     .addColumn("dosage_unit", "text", (col) => col.notNull())
-    .addColumn("frequency", "integer", (col) => col.notNull())
-    .addColumn("frequency_unit", "text", (col) => col.notNull())
+    .addColumn("frequency", "text", (col) => col.notNull())
     .addColumn("start_date", "timestamp", (col) => col.notNull())
     .addColumn("end_date", "timestamp", (col) => col.notNull())
     .addColumn("created_at", "timestamp", (col) =>
